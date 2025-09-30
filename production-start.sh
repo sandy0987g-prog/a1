@@ -24,7 +24,7 @@ MONGO_PID=$!
 # Wait for MongoDB to be ready
 echo "Waiting for MongoDB to start..."
 for i in {1..30}; do
-  if mongo --eval "db.runCommand({ ping: 1 })" --quiet > /dev/null 2>&1; then
+  if mongosh --eval "db.runCommand({ ping: 1 })" --quiet > /dev/null 2>&1 || mongo --eval "db.runCommand({ ping: 1 })" --quiet > /dev/null 2>&1; then
     echo "MongoDB is ready!"
     break
   fi
@@ -36,6 +36,6 @@ for i in {1..30}; do
   sleep 1
 done
 
-# Start the development server (this will run in the foreground)
-export NODE_ENV=development
-exec node -r tsconfig-paths/register server/index.js
+# Start the production server (this will run in the foreground)
+export NODE_ENV=production
+exec node dist/index.js

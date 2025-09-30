@@ -38,7 +38,11 @@ externalPort = 80
 localPort = 42321
 externalPort = 3000
 
+[[ports]]
+localPort = 43341
+externalPort = 3001
+
 [deployment]
-deploymentTarget = "vm"
-run = ["bash", "production-start.sh"]
+deploymentTarget = "autoscale"
+run = ["npm", "run", "start"]
 build = ["npm", "run", "build"]
