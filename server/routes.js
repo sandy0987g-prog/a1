@@ -104,8 +104,6 @@ export async function registerRoutes(app) {
         xmlContent = await readFile(req.file.path, 'utf8');
         // Remove BOM if present
         xmlContent = xmlContent.replace(/^\uFEFF/, '');
-        // Log the entire XML content for debugging
-        console.log('XML Content:', xmlContent);
         
         // Check if the content starts with <?xml
         if (!xmlContent.trim().startsWith('<?xml')) {
@@ -118,10 +116,7 @@ export async function registerRoutes(app) {
 
       let parsedParcels;
       try {
-        console.log('Attempting to parse XML content:', xmlContent);
         parsedParcels = await xmlParser.parseXML(xmlContent);
-        console.log('Parsed parcels:', JSON.stringify(parsedParcels, null, 2));
-        console.log('Parsed parcels count:', parsedParcels.length);
       } catch (error) {
         console.error('XML parsing error:', error);
         return res.status(400).json({
@@ -143,15 +138,10 @@ export async function registerRoutes(app) {
       const processedParcels = [];
       const errors = [];
 
-      console.log('Starting parcel processing...');
       for (const parsedParcel of parsedParcels) {
         try {
-          console.log('Processing parcel:', JSON.stringify(parsedParcel, null, 2));
           const insertParcel = xmlParser.convertToInsertParcel(parsedParcel);
-          console.log('Converted to insert format:', JSON.stringify(insertParcel, null, 2));
-          
           const parcel = await businessRulesEngine.processParcel(insertParcel);
-          console.log('Successfully processed parcel:', JSON.stringify(parcel, null, 2));
           processedParcels.push(parcel);
         } catch (error) {
           console.error('Error processing parcel:', parsedParcel.parcelId, error);
@@ -161,8 +151,6 @@ export async function registerRoutes(app) {
           });
         }
       }
-
-      console.log('Finished processing parcels. Success:', processedParcels.length, 'Errors:', errors.length);
 
       res.json({
         message: `Processed ${processedParcels.length} parcels${errors.length > 0 ? ` (${errors.length} errors)` : ''}`,

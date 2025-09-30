@@ -50,10 +50,6 @@ export async function connectToDatabase() {
   isConnecting = true;
   connectionPromise = (async () => {
     try {
-      console.log('Attempting to connect to MongoDB...');
-      console.log('Connection URI:', uri);
-      console.log('Database Name:', dbName);
-
       // Create new connection
       client = new MongoClient(uri, options);
 
@@ -62,21 +58,16 @@ export async function connectToDatabase() {
         console.error('MongoDB heartbeat failed:', event);
       });
 
-      client.on('serverHeartbeatSucceeded', () => {
-        console.log('MongoDB heartbeat succeeded');
-      });
-
       client.on('connectionPoolCleared', () => {
         console.warn('MongoDB connection pool cleared');
       });
 
       await client.connect();
-      console.log('Connected to MongoDB');
-
+      
       // Test the connection and initialize the database
       db = client.db(dbName);
       await db.command({ ping: 1 });
-      console.log('MongoDB connection test successful');
+      console.log('Connected to MongoDB');
 
       return { client, db };
     } catch (error) {
