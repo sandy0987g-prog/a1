@@ -5,12 +5,12 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node -r tsconfig-paths/register server/index.js",
+    "dev": "cross-env NODE_ENV=development node server/index.js",
     "build": "vite build && esbuild server/index.js --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "db:push": "drizzle-kit push",
-    "db:init": "cross-env TS_NODE_PROJECT=server/scripts/tsconfig.json tsx server/scripts/initDb.ts",
-    "db:test": "cross-env TS_NODE_PROJECT=server/scripts/tsconfig.json tsx server/scripts/testDb.ts"
+    "db:init": "node server/scripts/initDb.js",
+    "db:test": "node server/scripts/testDb.js"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.5",
@@ -25,9 +25,6 @@
     "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/mongodb": "^4.0.6",
-    "@types/supertest": "^6.0.3",
-    "@types/xml2js": "^0.4.14",
     "@vitest/ui": "^3.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -43,7 +40,6 @@
     "supertest": "^7.1.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "tsconfig-paths": "^4.2.0",
     "vitest": "^3.2.4",
     "wouter": "^3.3.5",
     "xml2js": "^0.6.2",
@@ -54,18 +50,12 @@
     "@replit/vite-plugin-dev-banner": "^0.1.1",
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
     "@tailwindcss/typography": "^0.5.15",
-    "@types/express": "^4.17.21",
-    "@types/multer": "^2.0.0",
-    "@types/node": "^20.16.11",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.7.0",
     "autoprefixer": "^10.4.21",
     "cross-env": "^10.1.0",
     "drizzle-kit": "^0.31.4",
     "esbuild": "^0.25.0",
     "tailwindcss": "^3.4.17",
-    "tsx": "^4.20.5",
     "vite": "^5.4.20"
   },
   "optionalDependencies": {
